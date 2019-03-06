@@ -1,0 +1,198 @@
+<!doctype html>
+
+<head>
+    <title>Profile - Nimbus</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <link rel="stylesheet" href="/assets/css/bootstrap-grid.min.css">
+    <script src="/assets/css/noty.js" type="text/javascript"></script>
+    <link href="/assets/css/noty.css" rel="stylesheet">
+    <link href="/assets/css/nest.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+
+<body style="">
+   <div class="main">
+      <header style="padding-bottom: 60px;">
+         <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark" style="/* margin-bottom: 30px; */background-color: #1a1a24 !important;">
+            <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse collapse" id="navbarCollapse" style="margin-top: 9px; margin-bottom: 9px;">
+               <ul class="navbar-nav mr-auto">
+               </ul>
+               <form class="form-inline mt-2 mt-md-0">
+                  <a class="btn outline" href="/features" target="_self" role="button" style="
+                     border-radius: 40px;
+                     border: 2px solid #6428d8;
+                     ">
+                  <span>Logout</span>
+                  </a>
+               </form>
+            </div>
+         </nav>
+      </header>
+      <div id="content">
+         <div class="top" style="">
+            <main role="main" class="container dash-card">
+               <div class="my-3 p-3 bg-white rounded box-shadow profile-box" style="
+                  background-color: #21212d !important;
+                  border-radius: 1.25rem!important;
+                  height: 100%;
+                  ">
+                  <div class="container">
+                     <div class="row">
+                        <div class="col-md-12 order-md-1">
+                           <div class="container">
+                              <div class="row" style="
+                                 padding-top: 15px;">
+                                 <div class="col">
+                                    <img src="https://cdn.discordapp.com/avatars/{{ user.discordID }}/{{ user.avi }}.png" style="height: 90px; border-radius: 0.75rem!important;"/>
+                                 </div>
+                                 <div class="col-9" style="color: white;">
+                                    <p style="padding-top: 15px;">Welcome, {{ user.username }}</p>
+                                    <span style="display: flex;">
+                                       <p style="font-size: 14px;font-weight: 500;">Membership status</p>
+                                       {% if general.status == 'Active' %}
+                                       <p style="
+                                          font-size: 14px;
+                                          font-weight: 500;
+                                          padding-left: 10px;
+                                          color: #5fff4a;
+                                          ">Active</p>
+                                        {% else %}
+                                        <p style="
+                                          font-size: 14px;
+                                          font-weight: 500;
+                                          padding-left: 10px;
+                                          color: #ff4a60;
+                                          ">Inactive</p>
+                                          {% endif %}
+                                    </span>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="tab-content" style="
+                              padding-left: 25px;
+                              padding-right: 25px;
+                              padding-top: 35px;
+                              ">
+                              <div class="tab-pane fade show active" role="tabpanel" id="general">
+                                 <div style="color: white;">
+                                    <div class="row" style="
+                                       background-color: #1b1b25;
+                                       border-radius: 15px;
+                                       ">
+                                       <div class="container" style="padding: 10px 10px 10px 25px;">
+                                          <div class="row">
+                                             <div class="col-3">
+                                                <p style="font-size: 16px;font-weight: 400;">License:</p>
+                                             </div>
+                                             <div class="col-9">
+                                                <p style="font-size: 16px;color: #9e9ea1;">{{ general.key }}</p>
+                                             </div>
+                                          </div>
+                                          <div class="row" style="padding-top: 6px;">
+                                             <div class="col-3">
+                                                <p style="font-size: 16px;font-weight: 400;">Expires:</p>
+                                             </div>
+                                             <div class="col-9">
+                                                <p style="font-size: 16px;color: #9e9ea1;">{{ general.nextBillingDate }}</p>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <div class="row">
+                                       <div class="container" class="act-group">
+                                          <div class="row">
+                                             <div class="col-6">
+                                                <button class="btn btn-primary btn-lg btn-block" type="submit" style="
+                                                   margin-top: 15px;
+                                                   border-radius: 40px;
+                                                   font-weight: 500;
+                                                   background-image: linear-gradient(to bottom right, #6428d8, #7444ca);
+                                                   ">Activate</button>
+                                             </div>
+                                             <div class="col-6">
+                                                <p style="font-size: 16px;color: #9e9ea1;">
+                                                <button class="btn btn-primary btn-lg btn-block" type="submit" style="
+                                                   margin-top: 15px;
+                                                   border-radius: 40px;
+                                                   font-weight: 500;
+                                                   background-image: linear-gradient(to bottom right, #ff3a37, #ff5351);
+                                                   ">Deactivate</button></p>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <small class="d-block text-right mt-3">
+               </small>
+            </main>
+            <main role="main" class="container dash-card">
+   <div class="my-3 p-3 bg-white rounded box-shadow profile-box" style="
+      background-color: #21212d !important;
+      border-radius: 1.25rem!important;
+      height: 100%;
+      ">
+      <p style="padding-top: 5px;text-align: center;font-size: 15px;color: white;">Current card: {{ general.customer.sources.data[0].brand }} - {{ general.customer.sources.data[0].last4 }}</p>
+      <div class="container">
+         <div class="row">
+            <div class="col-md-12 order-md-1">
+               <div class="tab-content" style="
+                  padding-left: 25px;
+                  padding-right: 25px;
+                  padding-top: 20px;
+                  ">
+                  <div class="tab-pane fade show active" role="tabpanel" id="general">
+                     <div style="color: white;">
+                     <input type="hidden" id="publishable_key" value="{{ publishable_key }}">
+                        <div class="row" style="
+                           background-color: #1b1b25;
+                           border-radius: 15px;
+                           ">
+                           <div class="container" style="padding: 10px 10px 10px 25px;">
+                              <div class="row">
+                                 <div class="col-12">
+                                    <div id="card-element" class="field"></div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="row">
+                           <div class="container" style="padding: 10px 0px 10px 0px;">
+                              <div class="row">
+                                 <div class="col-12">
+                                    <button class="btn btn-primary btn-lg btn-block" type="submit" style="
+                                       margin-top: 15px;
+                                       border-radius: 40px;
+                                       font-weight: 500;
+                                       background-image: linear-gradient(to bottom right, #6428d8, #7444ca);
+                                       ">Change payment method</button>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</main>
+         </div>
+      </div>
+   </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="/assets/js/stripe.js"></script>
+    <script src="/assets/js/notify.js"></script>
+</body>
