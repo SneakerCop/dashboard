@@ -38,6 +38,7 @@ router.get('/profile', isAuthenticated, async (req, res, next) => {
         general.membership = user.bundle.title;
         general.email = user.email;
         general.nextBillingDate = 'N/A';
+        general.cancel_at_period_end = null;
         if (user.subscriptionID.startsWith('sub_')) {
             stripe.subscriptions.retrieve(user.subscriptionID, (err, subscription) => {
                 if (subscription) {
@@ -45,6 +46,7 @@ router.get('/profile', isAuthenticated, async (req, res, next) => {
                         function (callback) {
                             stripe.subscriptions.retrieve(user.subscriptionID, (err, subscription) => {
                                 if (subscription) {
+                                    general.cancel_at_period_end = subscription.cancel_at_period_end;
                                     callback(null, moment.unix(subscription.current_period_end).format('LL'), subscription.customer);
                                 } else {
                                     callback(err, null);
@@ -286,6 +288,22 @@ router.get('/activate', (req, res) => {
     } else {
         return res.redirect('/');
     }
+});
+
+router.get('/cancel', (req, res) => {
+    User.findById(req.user.identifier, async(err, user) => {
+        if (!err && user) {
+            if (user.exempt) return res.send('Whoops you dont have the permissions to do this.');
+            try {
+                await stripe.subscriptions.del(user.subscriptionID, { at_period_end: true })
+                return res.redirect('/');
+            } catch (e) {
+                return res.send('An error has occured while trying to cancel your subscription.');
+            }
+        } else {
+            return res.send('Whoops you dont have the permissions to do this.');
+        }
+    });
 });
 
 router.get('/logout', (req, res) => {

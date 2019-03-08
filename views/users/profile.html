@@ -80,7 +80,11 @@
                                                 <p style="font-size: 16px;font-weight: 400;">Expires:</p>
                                              </div>
                                              <div class="col-9">
-                                                <p style="font-size: 16px;color: #9e9ea1;">{{ general.nextBillingDate }}</p>
+                                                {% if general.cancel_at_period_end == true %}
+                                                <p style="font-size: 16px;color: #9e9ea1;">{{ general.nextBillingDate }} (Cancellation Date)</p>
+                                                {% else %}
+                                                   <p style="font-size: 16px;color: #9e9ea1;">{{ general.nextBillingDate }}</p>
+                                                {% endif %}
                                              </div>
                                           </div>
                                        </div>
@@ -160,12 +164,24 @@
                                        font-weight: 500;
                                        background-image: linear-gradient(to bottom right, #6428d8, #7444ca);
                                        ">Change payment method</button>
-                                       <a class="btn btn-primary btn-lg btn-block" type="submit" style="
-                                       margin-top: 15px;
-                                       border-radius: 40px;
-                                       font-weight: 500;
-                                       background-image: linear-gradient(to bottom right, #ff3a37, #ff5351);
-                                       ">Cancel Subscription</a>
+                                       {% if general.cancel_at_period_end == true %}
+                                          <a class="btn btn-primary btn-lg btn-block" href="/users/cancel" style="
+                                          margin-top: 15px;
+                                          border-radius: 40px;
+                                          font-weight: 500;
+                                          background-image: linear-gradient(to bottom right, #ff3a37, #ff5351);
+                                          pointer-events: none;
+                                          cursor: default;
+                                          opacity: 0.5;
+                                          ">Cancel Subscription</a>
+                                       {% else %}
+                                          <a class="btn btn-primary btn-lg btn-block" href="/users/cancel" style="
+                                          margin-top: 15px;
+                                          border-radius: 40px;
+                                          font-weight: 500;
+                                          background-image: linear-gradient(to bottom right, #ff3a37, #ff5351);
+                                          ">Cancel Subscription</a>
+                                       {% endif %}
                                  </div>
                               </div>
                            </div>
