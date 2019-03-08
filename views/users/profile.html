@@ -135,8 +135,9 @@
                   padding-top: 20px;
                   ">
                   <div class="tab-pane fade show active" role="tabpanel" id="general">
+                     <form action="/users/profile/update/billing" id="payment-form" method="post">
                      <div style="color: white;">
-                     <input type="hidden" id="publishable_key" value="{{ publishable_key }}">
+                     <input type="hidden" id="publishable_key" value="{{ publishable_key }}"/>
                         <div class="row" style="
                            background-color: #1b1b25;
                            border-radius: 15px;
@@ -153,7 +154,7 @@
                            <div class="container" style="padding: 10px 0px 10px 0px;">
                               <div class="row">
                                  <div class="col-12">
-                                    <button class="btn btn-primary btn-lg btn-block" type="submit" style="
+                                    <button class="btn btn-primary btn-lg btn-block" id="submit-button" type="submit" style="
                                        margin-top: 15px;
                                        border-radius: 40px;
                                        font-weight: 500;
@@ -170,6 +171,7 @@
                            </div>
                         </div>
                      </div>
+                     </form>
                   </div>
                </div>
             </div>
