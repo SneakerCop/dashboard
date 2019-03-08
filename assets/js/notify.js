@@ -6,7 +6,7 @@ Noty.overrideDefaults({
     closeWith: ['click'],
     killer: true
 });
-new Noty({
-    type: 'success', // alert, success, error, warning, info
-    text: 'Welcome! 🤖'
-}).show();
+// new Noty({
+//     type: 'success', // alert, success, error, warning, info
+//     text: 'Welcome! 🤖'
+// }).show();

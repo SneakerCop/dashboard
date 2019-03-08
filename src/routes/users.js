@@ -22,11 +22,13 @@ import Bundle from '../models/Bundle';
 const router = express.Router();
 const stripe = require('stripe')(process.env.STRIPE_PRIVATE_KEY);
 
-router.get('/profile', isAuthenticated, async (req, res) => {
+router.get('/profile', isAuthenticated, async (req, res, next) => {
 
     const usStates = new UsaStates();
 
     let general = {};
+
+    if (!req.user.identifier) return next();
 
     User.findById(req.user.identifier).populate('bundle').exec((err, user) => {
         general.key = user.key;
@@ -88,25 +90,50 @@ router.get('/profile', isAuthenticated, async (req, res) => {
 
 });
 
-router.post('/profile/update/general', isAuthenticated, async (req, res) => {
+router.get('/profile', isAuthenticated, async (req, res) => {
+    return res.render('users/redeem');
+});
 
-    /* TODO: Validation */
-    let email;
-    email = req.body['email']
 
-    BanditUser.findById(req.user._id, (err, user_n) => {
-        // TODO: Email Change
-        user_n.save(() => {
-            User.findById(req.user.identifier, (err, user) => {
-                user.email = email;
-                user.save(() => {
-                    // TODO: req.flash success
-                    return res.redirect('/users/profile');
-                });
-            });
-        });
+router.post('/redeem', isAuthenticated, async (req, res) => {
+    const key = req.body['license'];
+    let roles = [];
+    let identifier = null;
+    User.findOne({
+        key: key
+    }, async (err, user) => {
+        if (!err && user) {
+            identifier = user._id;
+            try {
+                let existingUser = await BanditUser.findOne({
+                    identifier: identifier
+                }).exec();
+                if (existingUser) {
+                    console.log(existingUser)
+                    return res.send('This key is already activated on anothers users account.')
+                } else {
+                    BanditUser.findOne({
+                        _id: req.user._id
+                    }, (err, b_user) => {
+                        if (!err && b_user) {
+                            b_user.identifier = identifier;
+                            b_user.save(() => {
+                                return res.redirect('/users/profile');
+                            });
+                        } else {
+                            return res.send('Error occured while trying to fetch your porfile information.')
+                        }
+                    });
+                }
+            } catch (err) {
+                console.log('err:', err);
+                return res.send('An unknown error has occured while trying to redeem your key.')
+            }
+
+        } else {
+            return res.send('Invalid key, please try again.');
+        }
     });
-
 });
 
 router.post('/profile/update/billing', isAuthenticated, async (req, res) => {
@@ -196,6 +223,29 @@ router.post('/profile/update/billing', isAuthenticated, async (req, res) => {
         }
 
     });
+});
+
+router.get('/deactivate', (req, res) => {
+    let oldIdentifier = null;
+    BanditUser.findOne({ _id: req.user._id }, (err, user) => {
+        /* TODO: Remove user from Discord if they're still in it */
+        oldIdentifier = user.identifier;
+        user.identifier = null;
+        user.save(() => {
+            /* Make Discord ID null in main database */
+            User.findOne({ _id: oldIdentifier }, (err, db_user) => {
+                db_user.discordID = null;
+                db_user.save(() => {
+                    return res.redirect('/');
+                });
+            });
+        });
+    });
+});
+
+router.get('/logout', (req, res) => {
+    req.logout();
+    res.redirect('/');
 });
 
 export default router;

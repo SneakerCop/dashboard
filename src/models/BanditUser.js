@@ -5,7 +5,9 @@ const userSchema = new mongoose.Schema({
     discordID: String,
     avi: String,
     username: String,
-    discriminator: String
+    discriminator: String,
+    accessToken: String,
+    refreshToken: String
 });
 
 const User = mongoose.model('BanditUser', userSchema);
