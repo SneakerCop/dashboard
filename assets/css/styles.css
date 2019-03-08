@@ -359,11 +359,17 @@ a.active.show {
 }
 
 .form-control:focus {
-    color: #fff;
-    background-color: #fff;
-    border-color: #ffffff00;
-    outline: 0;
-    box-shadow: 0 1px 3px 0 #e6ebf1;
+    display: block;
+    width: 100%;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: white;
+    background-color: #1b1b25;
+    background-clip: padding-box;
+    border: none;
+    border-radius: .25rem;
+    box-shadow: none;
 }
 
 .profile-box {

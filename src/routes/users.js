@@ -19,6 +19,8 @@ import User from '../models/User';
 import BanditUser from '../models/BanditUser';
 import Bundle from '../models/Bundle';
 
+import discord from '../utils/discord';
+
 const router = express.Router();
 const stripe = require('stripe')(process.env.STRIPE_PRIVATE_KEY);
 
@@ -31,6 +33,7 @@ router.get('/profile', isAuthenticated, async (req, res, next) => {
     if (!req.user.identifier) return next();
 
     User.findById(req.user.identifier).populate('bundle').exec((err, user) => {
+        if (!user) return next();
         general.key = user.key;
         general.membership = user.bundle.title;
         general.email = user.email;
@@ -91,7 +94,16 @@ router.get('/profile', isAuthenticated, async (req, res, next) => {
 });
 
 router.get('/profile', isAuthenticated, async (req, res) => {
-    return res.render('users/redeem');
+    if (req.user.identifier) {
+        BanditUser.findById(req.user._id, (err, b_user) => {
+            b_user.identifier = null;
+            b_user.save(() => {
+                return res.render('users/redeem');            
+            });
+        });
+    } else {
+        return res.render('users/redeem');
+    }
 });
 
 
@@ -109,7 +121,6 @@ router.post('/redeem', isAuthenticated, async (req, res) => {
                     identifier: identifier
                 }).exec();
                 if (existingUser) {
-                    console.log(existingUser)
                     return res.send('This key is already activated on anothers users account.')
                 } else {
                     BanditUser.findOne({
@@ -118,7 +129,7 @@ router.post('/redeem', isAuthenticated, async (req, res) => {
                         if (!err && b_user) {
                             b_user.identifier = identifier;
                             b_user.save(() => {
-                                return res.redirect('/users/profile');
+                                return res.redirect('/users/activate');
                             });
                         } else {
                             return res.send('Error occured while trying to fetch your porfile information.')
@@ -126,7 +137,6 @@ router.post('/redeem', isAuthenticated, async (req, res) => {
                     });
                 }
             } catch (err) {
-                console.log('err:', err);
                 return res.send('An unknown error has occured while trying to redeem your key.')
             }
 
@@ -227,20 +237,55 @@ router.post('/profile/update/billing', isAuthenticated, async (req, res) => {
 
 router.get('/deactivate', (req, res) => {
     let oldIdentifier = null;
-    BanditUser.findOne({ _id: req.user._id }, (err, user) => {
+    BanditUser.findOne({
+        _id: req.user._id
+    }, (err, user) => {
         /* TODO: Remove user from Discord if they're still in it */
         oldIdentifier = user.identifier;
         user.identifier = null;
         user.save(() => {
             /* Make Discord ID null in main database */
-            User.findOne({ _id: oldIdentifier }, (err, db_user) => {
+            User.findOne({
+                _id: oldIdentifier
+            }, (err, db_user) => {
                 db_user.discordID = null;
                 db_user.save(() => {
-                    return res.redirect('/');
+                    discord.removeFromGuild(process.env.DISCORD_BOT_TOKEN, process.env.GUILD_ID, req.user.discordID, (err, body) => {
+                        return res.redirect('/');
+                    });
                 });
             });
         });
     });
+});
+
+router.get('/activate', (req, res) => {
+    if (req.user.identifier) {
+        User.findById(req.user.identifier).populate('bundle').exec(async(err, user) => {
+            if (user.exempt) {
+                discord.inviteToGuild(process.env.DISCORD_BOT_TOKEN, process.env.GUILD_ID, req.user.discordID, req.user.accessToken, user.bundle.roles, (err, body) => {
+                    return res.redirect('/');
+                });
+            } else if (user.subscriptionID.indexOf('sub_') > -1) {
+                try {
+                    const subData = await stripe.subscriptions.retrieve(user.subscriptionID);
+                    if (subData.status == 'active') {
+                        discord.inviteToGuild(process.env.DISCORD_BOT_TOKEN, process.env.GUILD_ID, req.user.discordID, req.user.accessToken, user.bundle.roles, (err, body) => {
+                            return res.redirect('/');
+                        });
+                    } else {
+                        return res.redirect('/');
+                    }
+                } catch (e) {
+                    return res.redirect('/');            
+                }
+            } else {
+                return res.redirect('/');        
+            }
+        });
+    } else {
+        return res.redirect('/');
+    }
 });
 
 router.get('/logout', (req, res) => {

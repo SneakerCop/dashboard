@@ -42,7 +42,6 @@ passport.use(new DiscordStrategy({
                         refreshToken:refreshToken
                     });
                     newBanditUser.save(() => {
-                        console.log('created new user')
                         return cb(null, newBanditUser);
                     });
                 } else {

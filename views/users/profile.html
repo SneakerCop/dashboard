@@ -14,22 +14,7 @@
 
 <body style="">
    <div class="main">
-      <header style="padding-bottom: 60px;">
-         <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark" style="/* margin-bottom: 30px; */background-color: #1a1a24 !important;">
-            <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="navbar-collapse collapse" id="navbarCollapse" style="margin-top: 9px; margin-bottom: 9px;">
-               <ul class="navbar-nav mr-auto">
-               </ul>
-               <form class="form-inline mt-2 mt-md-0">
-                  <a class="btn outline" href="/users/logout" target="_self" role="button" style="border-radius: 40px;border: 2px solid #6428d8;">
-                  <span>Logout</span>
-                  </a>
-               </form>
-            </div>
-         </nav>
-      </header>
+      {% include "partials/header.html" %}
       <div id="content">
          <div class="top" style="">
             <main role="main" class="container dash-card">
@@ -104,12 +89,12 @@
                                        <div class="container" class="act-group">
                                           <div class="row">
                                              <div class="col-6">
-                                                <button class="btn btn-primary btn-lg btn-block" type="submit" style="
+                                                <a class="btn btn-primary btn-lg btn-block" href="/users/activate" style="
                                                    margin-top: 15px;
                                                    border-radius: 40px;
                                                    font-weight: 500;
                                                    background-image: linear-gradient(to bottom right, #6428d8, #7444ca);
-                                                   ">Activate</button>
+                                                   ">Activate</a>
                                              </div>
                                              <div class="col-6">
                                                 <p style="font-size: 16px;color: #9e9ea1;">
@@ -174,6 +159,12 @@
                                        font-weight: 500;
                                        background-image: linear-gradient(to bottom right, #6428d8, #7444ca);
                                        ">Change payment method</button>
+                                       <a class="btn btn-primary btn-lg btn-block" type="submit" style="
+                                       margin-top: 15px;
+                                       border-radius: 40px;
+                                       font-weight: 500;
+                                       background-image: linear-gradient(to bottom right, #ff3a37, #ff5351);
+                                       ">Cancel Subscription</a>
                                  </div>
                               </div>
                            </div>
