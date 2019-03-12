@@ -81,7 +81,7 @@ app.set('view engine', 'html');
 /* Routes */
 app.use('/', IndexRoutes(passport));
 app.use('/users', UserRoutes);
-app.use('/', WebhookRoutes);
+app.use('/webhooks', WebhookRoutes);
 
 const serverOpts = {
     host: '0.0.0.0',
