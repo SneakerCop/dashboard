@@ -33,9 +33,9 @@ mongoose.set('useCreateIndex', true);
 mongoose.set('useNewUrlParser', true);
 mongoose.connect(process.env.MONGODB_URI);
 mongoose.connection.on('error', (err) => {
-  console.error(err);
-  console.log('%s MongoDB connection error. Please make sure MongoDB is running.', chalk.red('✗'));
-  process.exit();
+    console.error(err);
+    console.log('%s MongoDB connection error. Please make sure MongoDB is running.', chalk.red('✗'));
+    process.exit();
 });
 
 /* Express Init */
@@ -50,9 +50,8 @@ nunjucks.configure(path.join(__dirname, '../views'), {
     express: app,
 });
 
-app.use(bodyParser.urlencoded({
-    extended: true,
-    limit: '50mb'
+app.use(bodyParser.json({
+    type: 'application/*+json'
 }));
 
 app.use(session({
