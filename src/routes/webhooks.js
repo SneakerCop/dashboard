@@ -22,8 +22,9 @@ router.post('/stripe', (req, res) => {
                 message: errMsg
             });
         } else {
+            const customerID = req.body.data.object.id;
             return res.status(200).json({
-                message: errMsg
+                message: customerID
             });
         }
     });
