@@ -3,6 +3,7 @@ import express from 'express';
 const router = express.Router();
 
 export default (passport) => {
+    
     router.get('/', async (req, res) => {
         if (req.user) {
             return res.redirect('/users/profile');

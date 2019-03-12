@@ -11,6 +11,7 @@ import mongoose from 'mongoose';
 
 import IndexRoutes from './routes/index';
 import UserRoutes from './routes/users';
+import WebhookRoutes from './routes/webhooks';
 
 import dotenv from 'dotenv';
 dotenv.config({
@@ -80,6 +81,7 @@ app.set('view engine', 'html');
 /* Routes */
 app.use('/', IndexRoutes(passport));
 app.use('/users', UserRoutes);
+app.use('/', WebhookRoutes);
 
 const serverOpts = {
     host: '0.0.0.0',

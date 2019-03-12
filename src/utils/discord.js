@@ -16,7 +16,7 @@ discord.inviteToGuild = function (botToken, guildID, discordID, access_token, ro
         if (err) {
             return callback(err, null);
         }
-        return callback(null, body);
+        return callback(null, res.statusCode);
     });
 };
 
@@ -32,7 +32,7 @@ discord.removeFromGuild = function (botToken, guildID, discordID, callback) {
         if (err) {
             return callback(err, null);
         }
-        return callback(null, body);
+        return callback(null, res.statusCode);
     });
 };
 

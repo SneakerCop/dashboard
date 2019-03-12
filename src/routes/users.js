@@ -252,6 +252,7 @@ router.get('/deactivate', (req, res) => {
             }, (err, db_user) => {
                 db_user.discordID = null;
                 db_user.save(() => {
+                    console.log(process.env.DISCORD_BOT_TOKEN)
                     discord.removeFromGuild(process.env.DISCORD_BOT_TOKEN, process.env.GUILD_ID, req.user.discordID, (err, body) => {
                         return res.redirect('/');
                     });
