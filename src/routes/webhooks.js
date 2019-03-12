@@ -11,6 +11,7 @@ const router = express.Router();
 export default () => {
     router.post('/stripe', (req, res) => {
         const errMsg = 'Invalidd Input, this endpoint only accepts verified cancellation requests.';
+        console.log('webhook req called');
         stripe.events.retrieve(req.body.id, (err, event) => {
             if (err) return res.status(400).json({
                 message: errMsg
