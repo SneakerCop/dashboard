@@ -15,12 +15,15 @@ export default () => {
             if (err) return res.status(400).json({
                 message: errMsg
             });
+            console.log(req.body);
             if (event.type !== 'customer.subscription.deleted') {
                 return res.status(200).json({
                     message: errMsg
                 });
             } else {
-                
+                return res.status(200).json({
+                    message: errMsg
+                });
             }
         });
     });
