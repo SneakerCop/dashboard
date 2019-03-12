@@ -36,4 +36,23 @@ discord.removeFromGuild = function (botToken, guildID, discordID, callback) {
     });
 };
 
+discord.dmUser = function (botToken, userID, callback) {
+    request({
+        headers: {
+            'Authorization': `Bot ${botToken}`,
+            'User-Agent': 'The Bandit Block User Dashboard'
+        },
+        uri: `https://discordapp.com/api/users/@me/channels`,
+        method: 'POST',
+        json: {
+            recipient_id: userID
+        }
+    }, (err, res, body) => {
+        if (err) {
+            return callback(err, null);
+        }
+        return callback(null, res.statusCode);
+    });
+}
+
 export default discord;
