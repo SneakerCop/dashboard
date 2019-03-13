@@ -3,7 +3,7 @@ import path from 'path';
 import dotenv from 'dotenv';
 import discord from '../utils/discord';
 import User from '../models/User';
-import BanditUser from '../models/BanditUser';
+import DashboardUser from '../models/DashboardUser';
 
 dotenv.config({
     path: path.join(__dirname, '../../.env')
@@ -34,7 +34,7 @@ router.post('/stripe', (req, res) => {
             }, async (err, user) => {
                 if (!err && user) {
                     try {
-                        const dashboardUser = await BanditUser.findOne({
+                        const dashboardUser = await DashboardUser.findOne({
                             identifier: user._id
                         }).exec();
 

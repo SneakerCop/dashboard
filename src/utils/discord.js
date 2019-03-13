@@ -4,7 +4,7 @@ discord.inviteToGuild = function (botToken, guildID, discordID, access_token, ro
     request({
         headers: {
             'Authorization': `Bot ${botToken}`,
-            'User-Agent': 'The Bandit Block User Dashboard'
+            'User-Agent': 'Kleidi User Dashboard'
         },
         uri: `https://discordapp.com/api/guilds/${guildID}/members/${discordID}`,
         method: 'PUT',
@@ -24,7 +24,7 @@ discord.removeFromGuild = function (botToken, guildID, discordID, callback) {
     request({
         headers: {
             'Authorization': `Bot ${botToken}`,
-            'User-Agent': 'The Bandit Block User Dashboard'
+            'User-Agent': 'Kleidi User Dashboard'
         },
         uri: `https://discordapp.com/api/guilds/${guildID}/members/${discordID}`,
         method: 'DELETE'
@@ -40,7 +40,7 @@ discord.createDMChannel = function (botToken, userID, callback) {
     request({
         headers: {
             'Authorization': `Bot ${botToken}`,
-            'User-Agent': 'The Bandit Block User Dashboard'
+            'User-Agent': 'Kleidi User Dashboard'
         },
         uri: `https://discordapp.com/api/users/@me/channels`,
         method: 'POST',
@@ -60,7 +60,7 @@ discord.dmUser = function (botToken, channelID, metadata, callback) {
     request({
         headers: {
             'Authorization': `Bot ${botToken}`,
-            'User-Agent': 'The Bandit Block User Dashboard'
+            'User-Agent': 'Kleidi User Dashboard'
         },
         uri: `https://discordapp.com/api/channels/${channelID}/messages`,
         method: 'POST',

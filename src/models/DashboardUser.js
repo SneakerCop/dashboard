@@ -10,5 +10,5 @@ const userSchema = new mongoose.Schema({
     refreshToken: String
 });
 
-const User = mongoose.model('BanditUser', userSchema);
+const User = mongoose.model('DashboardUser', userSchema);
 export default User;

@@ -1,7 +1,7 @@
 {
-  "name": "bandit-dashboard",
+  "name": "kleidi-dashboard",
   "version": "1.0.0",
-  "description": "Dashboard for the Bandit Block",
+  "description": "User Dashboard for the Kleidi",
   "main": "src/index.js",
   "scripts": {
     "dev": "nodemon --exec \"babel-node src/index.js\"",
@@ -13,7 +13,7 @@
     "babel-preset-env": "^1.7.0"
   },
   "author": "Peter Soboyejo <thepcmrtim@gmail.com>",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "@babel/cli": "^7.2.3",
     "@babel/core": "^7.2.2",

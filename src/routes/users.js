@@ -16,7 +16,7 @@ dotenv.config({
 });
 
 import User from '../models/User';
-import BanditUser from '../models/BanditUser';
+import DashboardUser from '../models/DashboardUser';
 import Bundle from '../models/Bundle';
 
 import discord from '../utils/discord';
@@ -98,10 +98,10 @@ router.get('/profile', isAuthenticated, async (req, res, next) => {
 
 router.get('/profile', isAuthenticated, async (req, res) => {
     if (req.user.identifier) {
-        BanditUser.findById(req.user._id, (err, b_user) => {
+        DashboardUser.findById(req.user._id, (err, b_user) => {
             b_user.identifier = null;
             b_user.save(() => {
-                return res.render('users/redeem');            
+                return res.render('users/redeem');
             });
         });
     } else {
@@ -120,13 +120,13 @@ router.post('/redeem', isAuthenticated, async (req, res) => {
         if (!err && user) {
             identifier = user._id;
             try {
-                let existingUser = await BanditUser.findOne({
+                let existingUser = await DashboardUser.findOne({
                     identifier: identifier
                 }).exec();
                 if (existingUser) {
                     return res.send('This key is already activated on anothers users account.')
                 } else {
-                    BanditUser.findOne({
+                    DashboardUser.findOne({
                         _id: req.user._id
                     }, (err, b_user) => {
                         if (!err && b_user) {
@@ -240,7 +240,7 @@ router.post('/profile/update/billing', isAuthenticated, async (req, res) => {
 
 router.get('/deactivate', (req, res) => {
     let oldIdentifier = null;
-    BanditUser.findOne({
+    DashboardUser.findOne({
         _id: req.user._id
     }, (err, user) => {
         /* TODO: Remove user from Discord if they're still in it */
@@ -264,7 +264,7 @@ router.get('/deactivate', (req, res) => {
 
 router.get('/activate', (req, res) => {
     if (req.user.identifier) {
-        User.findById(req.user.identifier).populate('bundle').exec(async(err, user) => {
+        User.findById(req.user.identifier).populate('bundle').exec(async (err, user) => {
             if (user.exempt) {
                 discord.inviteToGuild(process.env.DISCORD_BOT_TOKEN, process.env.GUILD_ID, req.user.discordID, req.user.accessToken, user.bundle.roles, (err, body) => {
                     return res.redirect('/');
@@ -280,10 +280,10 @@ router.get('/activate', (req, res) => {
                         return res.redirect('/');
                     }
                 } catch (e) {
-                    return res.redirect('/');            
+                    return res.redirect('/');
                 }
             } else {
-                return res.redirect('/');        
+                return res.redirect('/');
             }
         });
     } else {
@@ -292,11 +292,13 @@ router.get('/activate', (req, res) => {
 });
 
 router.get('/cancel', (req, res) => {
-    User.findById(req.user.identifier, async(err, user) => {
+    User.findById(req.user.identifier, async (err, user) => {
         if (!err && user) {
             if (user.exempt) return res.send('Whoops you dont have the permissions to do this.');
             try {
-                await stripe.subscriptions.del(user.subscriptionID, { at_period_end: true })
+                await stripe.subscriptions.del(user.subscriptionID, {
+                    at_period_end: true
+                })
                 return res.redirect('/');
             } catch (e) {
                 return res.send('An error has occured while trying to cancel your subscription.');
