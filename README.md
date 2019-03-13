@@ -18,5 +18,8 @@ Setting up the dashboard is a fairly easy process and will require you to collec
 | GUILD_ID              | ID pertaining to your Discord Group. Can be found here, if your Discord is in Developers Mode: https://i.imgur.com/AqATMum.png        |
 
 ## Discord OAuth Redirect
+Log into the [Discord Developers Website](https://discordapp.com/developers/applications/) and click on your desired application. To the left, you'll see a section called "OAuth2". Add and save a redirect URL named `https://<YOUR DOMAIN HERE>/auth/discord/callback` and be sure to click Save Changes
 
 ## Stripe Webhooks
+
+When logged into your Stripe account, going under `Developers > Webhooks` click the `Add Endpoint` button and set the value as `https://yourdomain.com/webhooks/stripe` and then click `Add Endpoint` when you're done.
