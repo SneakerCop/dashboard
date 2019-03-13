@@ -1,0 +1,37 @@
+{
+    "name": "Kleidi Dashboard",
+    "description": "User dashboard for Kleidi group users (Stripe)",
+    "repository": "https://github.com/kleidi-bot/dashboard",
+    "logo": "https://avatars1.githubusercontent.com/u/46332932?s=200&v=4",
+    "keywords": ["discord", "bots", "stripe"],
+    "env": {
+        "MONGODB_URI": {
+            "description": "The existing MongoDB URI that you're currently using for your keybot server."
+        },
+        "SESSION_SECRET": {
+            "description": "Random String Value",
+            "generator": "secret"
+        },
+        "DISCORD_CLIENT_ID": {
+            "description": "Existing Discord Developers Client ID that is being used for your keybot server."
+        },
+        "DISCORD_CLIENT_SECRET": {
+            "description": "Existing Discord Developers Client Secret that is being used for your keybot server."
+        },
+        "DISCORD_BOT_TOKEN": {
+            "description": "Existing Discord Developers Bot Token that is being used for your keybot server."
+        },
+        "DISCORD_CALLBACK": {
+            "description": "Callback URL that must be set as an OAuth Redirect on the Discord Developers Site. "
+        },
+        "STRIPE_PUBLIC_KEY": {
+            "description": "Existing Stripe Public Key being used on your keybot server."
+        },
+        "STRIPE_PRIVATE_KEY": {
+            "description": "Existing Stripe Private Key being used on your keybot server."
+        },
+        "GUILD_ID": {
+            "description": "ID pertaining to your Discord Group."
+        }
+    }
+  }
