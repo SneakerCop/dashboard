@@ -23,7 +23,7 @@ router.post('/stripe', (req, res) => {
                 message: errMsg
             });
         } else {
-            
+
             const subscriptionID = req.body.data.object.id;
 
             User.findOneAndRemove({
@@ -34,7 +34,7 @@ router.post('/stripe', (req, res) => {
                         const dashboardUser = await BanditUser.findOne({
                             identifier: user._id
                         }).exec();
-                        console.log('dashboardUser:', dashboardUser);
+                        messageUser(dashboardUser.discordID, 'Your account has been cancelled, all recurring payments and user functions will be discontinued.');
                         discord.removeFromGuild(process.env.DISCORD_BOT_TOKEN, process.env.GUILD_ID, dashboardUser.discordID, (err, body) => {
                             return res.status(200).json({
                                 message: `User deleted: ${subscriptionID}`
@@ -56,9 +56,18 @@ router.post('/stripe', (req, res) => {
     });
 });
 
- /* Message User Notifying them */
-//  discord.createDMChannel(process.env.DISCORD_BOT_TOKEN, req.user.discordID, (err, body) => {
-                          
-// });
+const messageUser = function(discordID, text) {
+    /* Message User Notifying them */
+    discord.createDMChannel(process.env.DISCORD_BOT_TOKEN, discordID, (err, channelID) => {
+        const meta = {
+            "content": text,
+            "tts": false
+        }
+        discord.dmUser(process.env.DISCORD_BOT_TOKEN, channelID, meta, (err, res) => {});
+    });
+}
+
+router.get('/test', (req, res) => {
+});
 
 export default router;

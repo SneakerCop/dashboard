@@ -51,21 +51,20 @@ discord.createDMChannel = function (botToken, userID, callback) {
         if (err) {
             return callback(err, null);
         }
+        console.log(body)
         return callback(null, body.id);
     });
 }
 
-discord.dmUser = function (botToken, userID, callback) {
+discord.dmUser = function (botToken, channelID, metadata, callback) {
     request({
         headers: {
             'Authorization': `Bot ${botToken}`,
             'User-Agent': 'The Bandit Block User Dashboard'
         },
-        uri: `https://discordapp.com/api/users/@me/channels`,
+        uri: `https://discordapp.com/api/channels/${channelID}/messages`,
         method: 'POST',
-        json: {
-            recipient_id: userID
-        }
+        json: metadata
     }, (err, res, body) => {
         if (err) {
             return callback(err, null);
