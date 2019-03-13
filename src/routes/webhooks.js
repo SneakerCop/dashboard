@@ -45,7 +45,7 @@ router.post('/stripe', (req, res) => {
                                 });
                             });
                         });
-                        
+
                     } catch (e) {
                         return res.status(400).json({
                             message: 'Error occured while trying to resolve user from database.'
@@ -74,7 +74,5 @@ const messageUser = function (discordID, text, callback) {
         });
     });
 }
-
-router.get('/test', (req, res) => {});
 
 export default router;
