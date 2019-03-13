@@ -13,7 +13,7 @@ const stripe = require('stripe')(process.env.STRIPE_PRIVATE_KEY);
 const router = express.Router();
 
 router.post('/stripe', (req, res) => {
-    
+
     const errMsg = 'Invalid Input, this endpoint only accepts verified cancellation requests.';
     const cancelMsg = 'Your account has been cancelled, all recurring payments and user functions will be discontinued.';
 
@@ -37,13 +37,15 @@ router.post('/stripe', (req, res) => {
                         const dashboardUser = await BanditUser.findOne({
                             identifier: user._id
                         }).exec();
-                        discord.removeFromGuild(process.env.DISCORD_BOT_TOKEN, process.env.GUILD_ID, dashboardUser.discordID, (err, body) => {
-                            messageUser(dashboardUser.discordID, cancelMsg, () => {
+
+                        messageUser(dashboardUser.discordID, cancelMsg, () => {
+                            discord.removeFromGuild(process.env.DISCORD_BOT_TOKEN, process.env.GUILD_ID, dashboardUser.discordID, (err, body) => {
                                 return res.status(200).json({
                                     message: `User deleted: ${subscriptionID}`
                                 });
                             });
                         });
+                        
                     } catch (e) {
                         return res.status(400).json({
                             message: 'Error occured while trying to resolve user from database.'
@@ -60,7 +62,7 @@ router.post('/stripe', (req, res) => {
     });
 });
 
-const messageUser = function(discordID, text, callback) {
+const messageUser = function (discordID, text, callback) {
     /* Message User Notifying them */
     discord.createDMChannel(process.env.DISCORD_BOT_TOKEN, discordID, (err, channelID) => {
         const meta = {
@@ -73,7 +75,6 @@ const messageUser = function(discordID, text, callback) {
     });
 }
 
-router.get('/test', (req, res) => {
-});
+router.get('/test', (req, res) => {});
 
 export default router;
