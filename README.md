@@ -2,7 +2,7 @@
 
 User dashboard for Kleidi group users (Stripe)
 
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/kleidi-bot/dashboard/tree/master)
 
 ## Setting up Enviromental Variables for Production
 Setting up the dashboard is a fairly easy process and will require you to collect very specific values to make everything work together.
