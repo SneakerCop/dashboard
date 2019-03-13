@@ -70,6 +70,7 @@ router.get('/profile', isAuthenticated, async (req, res, next) => {
                         general.customer = result.customer;
                         const subData = await stripe.subscriptions.retrieve(user.subscriptionID);
                         general.status = subData.status.charAt(0).toUpperCase() + subData.status.slice(1);
+
                         return res.render('users/profile', {
                             'publishable_key': process.env.STRIPE_PUBLIC_KEY,
                             'general': general,
@@ -252,7 +253,6 @@ router.get('/deactivate', (req, res) => {
             }, (err, db_user) => {
                 db_user.discordID = null;
                 db_user.save(() => {
-                    console.log(process.env.DISCORD_BOT_TOKEN)
                     discord.removeFromGuild(process.env.DISCORD_BOT_TOKEN, process.env.GUILD_ID, req.user.discordID, (err, body) => {
                         return res.redirect('/');
                     });
