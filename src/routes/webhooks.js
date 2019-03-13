@@ -3,6 +3,7 @@ import path from 'path';
 import dotenv from 'dotenv';
 import discord from '../utils/discord';
 import User from '../models/User';
+import BanditUser from '../models/BanditUser';
 
 dotenv.config({
     path: path.join(__dirname, '../../.env')
@@ -33,6 +34,7 @@ router.post('/stripe', (req, res) => {
                         const dashboardUser = await BanditUser.findOne({
                             identifier: user._id
                         }).exec();
+                        console.log('dashboardUser:', dashboardUser);
                         discord.removeFromGuild(process.env.DISCORD_BOT_TOKEN, process.env.GUILD_ID, dashboardUser.discordID, (err, body) => {
                             return res.status(200).json({
                                 message: `User deleted: ${customerID}`
@@ -40,7 +42,7 @@ router.post('/stripe', (req, res) => {
                         });
                     } catch (e) {
                         return res.status(400).json({
-                            message: e
+                            message: 'Error occured while trying to resolve user from database.'
                         });
                     }
                 } else {
