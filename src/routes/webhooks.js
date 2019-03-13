@@ -37,7 +37,7 @@ router.post('/stripe', (req, res) => {
                         console.log('dashboardUser:', dashboardUser);
                         discord.removeFromGuild(process.env.DISCORD_BOT_TOKEN, process.env.GUILD_ID, dashboardUser.discordID, (err, body) => {
                             return res.status(200).json({
-                                message: `User deleted: ${customerID}`
+                                message: `User deleted: ${subscriptionID}`
                             });
                         });
                     } catch (e) {
