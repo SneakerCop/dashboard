@@ -29,7 +29,6 @@ router.post('/stripe', (req, res) => {
                 subscriptionID: subscriptionID
             }, async (err, user) => {
                 if (!err && user) {
-
                     try {
                         const dashboardUser = await BanditUser.findOne({
                             identifier: user._id
@@ -44,10 +43,9 @@ router.post('/stripe', (req, res) => {
                             message: e
                         });
                     }
-
                 } else {
                     return res.status(400).json({
-                        message: 'Error occured while trying to resolve user.'
+                        message: 'User has already been deleted.'
                     });
                 }
             });
