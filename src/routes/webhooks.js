@@ -41,7 +41,7 @@ router.post('/stripe', (req, res) => {
                         });
                     } catch (e) {
                         return res.status(400).json({
-                            message: errMsg
+                            message: e
                         });
                     }
 
